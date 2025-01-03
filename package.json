@@ -1,0 +1,12 @@
+{
+  "name": "confetti-fall",
+  "version": "0.0.1",
+  "description": "A web component that allows you to add confetti to your website or website element.",
+  "main": "confetti-fall.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+"start": "npx @11ty/eleventy-dev-server"
+  },
+  "author": "Michael Gehrmann",
+  "license": "MIT"
+}

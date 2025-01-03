@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<title></title>
+		<style>
+			body {
+				color: #fff;
+				background-color: #012;
+				height: 100vh;
+				margin: 0;
+				font-family: system-ui, sans-serif;
+			}
+			a[href],
+			a[href]:visited {
+				color: inherit;
+			}
+			div {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+				gap: .5em;
+				text-align: center;
+                background-color:#123
+			}
+		</style>
+		<script type="module" src="confetti-fall.js?v=3"></script>
+	</head>
+	<body>
+		<main>
+			<confetti-fall mode="page"></confetti-fall>
+            
+			<div style="min-height: 100vh" style="--confetti-fall-color: #666; --confetti-fall-size: 20px">
+                <h1>confetti</h1>
+				<p>&lt;confetti-fall&gt; on Page</p>
+				<confetti-fall mode="element" style="--confetti-fall-color: #123; --confetti-fall-size: 20px">
+					<div style="width: 300px; height: 300px; background-color: rgba(0,0,0,0.5); color: #fff;">
+						<p>&lt;confetti-fall&gt; on Element<br>(custom color, size)<br><a href="https://github.com/zachleat/snow-fall">Test link</a></p>
+					</div>
+				</confetti-fall>
+				<p><a href="https://github.com/zachleat/snow-fall">Source code</a> and <a href="https://www.zachleat.com/web/snow-fall/">Blog post</a></p>
+			</div>
+		</main>
+	</body>
+</html>
