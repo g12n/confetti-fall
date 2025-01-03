@@ -27,9 +27,9 @@ h1{
 }
 
 #confetti-1{
-  --confetti-fill: #f69;
+  --confetti-fall-fill: #f69;
 }
 #confetti-2{
-  --confetti-fill: powderblue;
+  --confetti-fall-fill: powderblue;
   --confetti-fall-size: 20px
 }

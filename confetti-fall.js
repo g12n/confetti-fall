@@ -4,67 +4,64 @@ class Confetti extends HTMLElement {
     }
 
     static attrs = {
-        count: "count", // default: 100
+        count: "count",
         mode: "mode",
-        text: "text", // text in confetti flake (emoji, too)
+        text: "text"
+    }
+
+    #registerCSSProperties() {
+        if (!window.CSS?.registerProperty) return false;
+        
+        const properties = [
+            { name: '--confetti-fall-spinAngle', syntax: '<angle>', initialValue: '0deg' },
+            { name: '--confetti-fall-x', syntax: '<length>', initialValue: '0px' },
+            { name: '--confetti-fall-y', syntax: '<length>', initialValue: '0px' },
+            { name: '--confetti-fall-fill', syntax: '<color>', initialValue: '#123' }
+        ];
+
+        properties.forEach(prop => {
+            try {
+                CSS.registerProperty({
+                    ...prop,
+                    inherits: prop.name === '--confetti-fall-fill'
+                });
+            } catch (e) {
+                console.warn(`Failed to register ${prop.name}:`, e);
+            }
+        });
+        return true;
     }
 
     connectedCallback() {
-		if (window.CSS && CSS.registerProperty) {
-			try {
-				CSS.registerProperty({
-					name: '--spinAngle',
-					syntax: '<angle>',
-					inherits: false,
-					initialValue: '0deg'
-				});
+        if (!this.#registerCSSProperties()) return;
 
-				CSS.registerProperty({
-					name: '--x',
-					syntax: '<length>',
-					inherits: false,
-					initialValue: '0px'
-				});
-				CSS.registerProperty({
-					name: '--y',
-					syntax: '<length>',
-					inherits: false,
-					initialValue: '0px'
-				});
-				CSS.registerProperty({
-					name: '--confetti-fill',
-					syntax: '<color>',
-					inherits: true,
-					initialValue: '#123'
-				});
-				
-			} catch (e) {
-				console.warn(e);
-			}	
-		} else{
-			return
-		}
-
-        let count = parseInt(this.getAttribute(Confetti.attrs.count)) || 100;
-
-        let mode;
-        if(this.hasAttribute(Confetti.attrs.mode)) {
-            mode = this.getAttribute(Confetti.attrs.mode);
-        } else {
-            mode = this.firstElementChild ? "element" : "page";
-            this.setAttribute(Confetti.attrs.mode, mode);
-        }
-
-        let shadowroot = this.attachShadow({ mode: "open" });
+        const count = parseInt(this.getAttribute(Confetti.attrs.count)) || 100;
+        const mode = this.#determineMode();
+        const shadowRoot = this.attachShadow({ mode: "open" });
         
-        // Create a style element and append the CSS
+        shadowRoot.appendChild(this.#createStyles());
+        this.#createConfetti(count, shadowRoot);
+        shadowRoot.appendChild(document.createElement("slot"));
+    }
+
+    #determineMode() {
+        if (this.hasAttribute(Confetti.attrs.mode)) {
+            return this.getAttribute(Confetti.attrs.mode);
+        }
+        const mode = this.firstElementChild ? "element" : "page";
+        this.setAttribute(Confetti.attrs.mode, mode);
+        return mode;
+    }
+
+    #createStyles() {
         const style = document.createElement('style');
         style.textContent = `
-            :host{
-				--confetti-fall-size:10px;
-                --confetti-fill: var(--confetti-fall-color,#f69);
-                --confetti-fill-2: oklch(from var(--confetti-fill) calc(l * 0.75) c h);
-			}
+            :host {
+                --confetti-fall-size: 10px;
+                --confetti-fall-fill: var(--confetti-fall-color, #f69);
+                --confetti-fall-fill-2: oklch(from var(--confetti-fall-fill) calc(l * 0.75) c h);
+            }
+            
             :host([mode="element"]) {
                 display: block;
                 position: relative;
@@ -88,85 +85,73 @@ class Confetti extends HTMLElement {
             }
             
             :host([text]) * {
-                font-size: var(--confetti-fall-size, 1em);
+                font-size: var(--confetti-fall-size);
+				--confetti-fall-fill: transparent!important;;
+				--confetti-fall-fil-2: transparent!important;
             }
             
-           
             @keyframes spin {
-                to {
-                    --spinAngle: 360deg;
-                }
+                to { --confetti-fall-spinAngle: 360deg; }
             }
-        
             
             @keyframes fall {
-				 from {
-                    --y: -100px;
-                }
-                to {
-                    --y: 1000px;
-                }
+                from { --confetti-fall-y: -100px; }
+                to { --confetti-fall-y: 1000px; }
             }
-          
             
             @keyframes drift {
-                to {
-                    --x: 10vmin;
-                }
+                to { --confetti-fall-x: 10vmin; }
             }
-        
+            
             @keyframes colorshift {
-			 	from {
-                    --confetti-fill: var(--confetti-fill);
-                }
-                to {
-                    --confetti-fill: var(--confetti-fill-2);
-                }
+                from { --confetti-fall-fill: var(--confetti-fall-fill); }
+                to { --confetti-fall-fill: var(--confetti-fall-fill-2); }
             }
             
             .confetti {
-                --y: -10px;
-                --x: -10px;
-				--tilt:0;
-				--tilt-2:0;
-                --spinAngle: 0deg;
-                --animation-delay: -1s;
+                --confetti-fall-y: -10px;
+                --confetti-fall-x: -10px;
+                --confetti-fall-tilt: 0;
+                --confetti-fall-tilt-2: 0;
+                --confetti-fall-spinAngle: 0deg;
+                --confetti-fall-animation-delay: -1s;
 
-				position: absolute;
+                position: absolute;
                 pointer-events: none;
-            
-                width: var(--confetti-fall-size, 100px);
-                height: var(--confetti-fall-size, 100px);
+                width: var(--confetti-fall-size);
+                height: var(--confetti-fall-size);
                 border-radius: 50%;
-                background: var(--confetti-fill);
-                animation: fall 7.33s linear infinite var(--animation-delay),
-                    	   spin 1s linear infinite var(--animation-delay),
-                           drift 3s ease-in-out infinite alternate var(--animation-delay),
-                           colorshift 0.5s ease-in-out infinite alternate var(--animation-delay);
-                transform: translate(var(--x), var(--y))
-                    rotate3d(var(--tilt), var(--tilt-2), 0, var(--spinAngle));
+                background: var(--confetti-fall-fill);
+                animation: 
+                    fall 7.33s linear infinite var(--confetti-fall-animation-delay),
+                    spin 1s linear infinite var(--confetti-fall-animation-delay),
+                    drift 3s ease-in-out infinite alternate var(--confetti-fall-animation-delay),
+                    colorshift 0.5s ease-in-out infinite alternate var(--confetti-fall-animation-delay);
+                transform: 
+                    translate(var(--confetti-fall-x), var(--confetti-fall-y))
+                    rotate3d(var(--confetti-fall-tilt), var(--confetti-fall-tilt-2), 0, var(--confetti-fall-spinAngle));
                 transform-origin: 10% 60%;
             }`;
-        
-        shadowroot.appendChild(style);
+        return style;
+    }
 
-		console.log(shadowroot)
-        let d = document.createElement("div");
-        d.classList.add("confetti");
-        let text = this.getAttribute(Confetti.attrs.text);
-        d.innerText = text || "";
+    #createConfetti(count, shadowRoot) {
+        const template = document.createElement("div");
+        template.classList.add("confetti");
+        template.innerText = this.getAttribute(Confetti.attrs.text) || "";
+
+        const fragment = document.createDocumentFragment();
         
-        for(let j = 0, k = count; j<k; j++) {
-            let clone = d.cloneNode(true);
-            // Add random initial values for each confetti
-            clone.style.setProperty('--animation-delay', `-${Math.random() * 20}s`);
-            clone.style.setProperty('--tilt', Math.random());
-            clone.style.setProperty('--tilt-2', Math.random());
-			clone.style.setProperty('left', Math.random()* 100 + "%");
-            shadowroot.appendChild(clone);
+        for (let i = 0; i < count; i++) {
+            const confetti = template.cloneNode(true);
+            confetti.style.setProperty('--confetti-fall-animation-delay', `-${Math.random() * 20}s`);
+            confetti.style.setProperty('--confetti-fall-tilt', Math.random().toString());
+            confetti.style.setProperty('--confetti-fall-tilt-2', Math.random().toString());
+            confetti.style.setProperty('left', `${Math.random() * 100}%`);
+            fragment.appendChild(confetti);
         }
 
-        shadowroot.appendChild(document.createElement("slot"));
+        shadowRoot.appendChild(fragment);
     }
 }
 
