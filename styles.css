@@ -1,0 +1,35 @@
+/* Base layout styles - Grid setup for full-page centering */
+html {
+  display: grid;
+  min-height: 100%;
+}
+
+/* Body styles - Creates nested grid for button centering */
+body {
+  display: grid;
+  background: #000;
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+}
+main>*{
+  text-align: center;
+  margin: 0;
+
+}
+a{ color: currentColor}
+body{
+  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+}
+
+h1{
+  font-size: 3rem;
+}
+
+#confetti-1{
+  --confetti-fill: #f69;
+}
+#confetti-2{
+  --confetti-fill: powderblue;
+  --confetti-fall-size: 20px
+}
