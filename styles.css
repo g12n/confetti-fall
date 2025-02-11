@@ -1,7 +1,8 @@
 /* Base layout styles - Grid setup for full-page centering */
-html {
+html, body {
   display: grid;
   min-height: 100%;
+  margin: 0;
 }
 
 /* Body styles - Creates nested grid for button centering */
@@ -9,17 +10,17 @@ body {
   display: grid;
   background: #000;
   color: #fff;
-  align-items: center;
-  justify-content: center;
+  place-items: center;
+  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 }
 main>*{
   text-align: center;
   margin: 0;
-
 }
-a{ color: currentColor}
-body{
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+a{
+  color: currentColor; 
+  text-underline-offset: 4px; 
+  text-decoration-thickness: 1px;
 }
 
 h1{
@@ -28,8 +29,10 @@ h1{
 
 #confetti-1{
   --confetti-fall-fill: #f69;
+  --confetti-fall-size: 5px
 }
+
 #confetti-2{
   --confetti-fall-fill: powderblue;
-  --confetti-fall-size: 20px
+  --confetti-fall-size: 10px
 }
