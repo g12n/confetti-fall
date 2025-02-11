@@ -1,11 +1,9 @@
-/* Base layout styles - Grid setup for full-page centering */
 html, body {
   display: grid;
   min-height: 100%;
   margin: 0;
 }
 
-/* Body styles - Creates nested grid for button centering */
 body {
   display: grid;
   background: #000;
