@@ -5,8 +5,15 @@
   "main": "confetti-fall.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-"start": "npx @11ty/eleventy-dev-server"
+    "start": "npx @11ty/eleventy-dev-server",
+    "analyze": "cem analyze", 
+    "validate":"wctools validate"
   },
   "author": "Michael Gehrmann",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.10",
+    "@wc-toolkit/wctools": "^0.0.8"
+  },
+  "customElements": "custom-elements.json"
 }

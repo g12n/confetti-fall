@@ -27,16 +27,20 @@
                 background-color:#123
 			}
 		</style>
-		<script type="module" src="confetti-fall.js?v=3"></script>
+		<script type="module" src="confetti-fall.js?v=2"></script>
 	</head>
 	<body>
 		<main>
-			<confetti-fall mode="page"></confetti-fall>
-            
+			<confetti-fall count=""></confetti-fall>
+			<confetti-fall mode="page" count="10"></confetti-fall>
+
+			<confetti-fall mode="page" text="❤️" count="10" style="--confetti-fall-size:20px"></confetti-fall>
+			<confetti-fall mode="page" text="😍" count="10" style="--confetti-fall-size:20px"></confetti-fall>
+
 			<div style="min-height: 100vh" style="--confetti-fall-color: #666; --confetti-fall-size: 20px">
                 <h1>confetti</h1>
 				<p>&lt;confetti-fall&gt; on Page</p>
-				<confetti-fall mode="element" style="--confetti-fall-color: #abc; --confetti-fall-size: 12px">
+				<confetti-fall count="100" mode="element" style="--confetti-fall-color: #fff; --confetti-fall-size: 4px">
 					<div style="width: 300px; height: 300px; background-color: rgba(0,0,0,0.5); color: #fff;">
 						<p>&lt;confetti-fall&gt; on Element<br>(custom color, size)<br><a href="https://github.com/g12n/confetti-fall">Test link</a></p>
 					</div>

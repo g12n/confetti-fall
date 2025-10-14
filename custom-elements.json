@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "confetti-fall.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Confetti",
+          "cssProperties": [
+            {
+              "description": "color of the confettis",
+              "name": "--confetti-fall-color"
+            },
+            {
+              "description": "size of the generated confettis",
+              "name": "--confetti-fall-size"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "registerCSSProperties"
+            },
+            {
+              "kind": "method",
+              "name": "determineMode"
+            },
+            {
+              "kind": "field",
+              "name": "count"
+            },
+            {
+              "kind": "field",
+              "name": "text"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "description": "amount of generated confettis"
+            },
+            {
+              "name": "mode",
+              "type": {
+                "text": "string"
+              },
+              "description": "either \"page\" or \"element\""
+            },
+            {
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "description": "optional text as confetti glyphs"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "confetti-fall",
+          "customElement": true,
+          "summary": "adds animated confetti effects to your website or specific elements"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "confetti-fall",
+          "declaration": {
+            "name": "Confetti",
+            "module": "confetti-fall.js"
+          }
+        }
+      ]
+    }
+  ]
+}
