@@ -11,6 +11,7 @@
   },
   "author": "Michael Gehrmann",
   "license": "MIT",
+  "files": ["index.js", "confetti-fall.js"],
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.10",
     "@wc-toolkit/wctools": "^0.0.8"
